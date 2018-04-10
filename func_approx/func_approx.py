@@ -32,6 +32,7 @@ class P:
 
 
 def makeData():
+    """creates arrays of numbers representing features and corresponsing labels"""
     r = random.Random(P.seed + 1)
     features = [r.uniform(P.min_x, P.max_x) for _ in range(P.number_of_samples)]
     labels = [func_to_approx(x) for x in features]
