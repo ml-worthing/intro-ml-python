@@ -63,8 +63,6 @@ class G:
 
     with tf.name_scope("everything_else"):
         init = tf.global_variables_initializer()
-        f_summary = tf.summary.tensor_summary(name='features', tensor=features_reshaped, summary_description="whatever")
-        tf.summary.tensor_summary('labels', labels)
         summaries = tf.summary.merge_all()
 
     print('[Done] Creating graph')
