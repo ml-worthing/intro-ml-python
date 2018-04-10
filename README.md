@@ -25,7 +25,10 @@ pip install --upgrade tensorflow
 pip freeze > requirements.txt 
 pip install -r requirements.txt 
 ```
-
+## tensor board
+```bash
+tensorboard --logdir func_approx/.tensorboard-func_approx.py
+```
 
 
 ## Setup Intellij
