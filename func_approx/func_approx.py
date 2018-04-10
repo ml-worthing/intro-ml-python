@@ -50,7 +50,7 @@ class G:
 
     with tf.name_scope("model"):
         features_reshaped = tf.reshape(features, shape=[-1, 1], name="features_r")
-        predictions = tf.layers.dense(inputs=features_reshaped, units=1, name="predictions")
+        predictions = tf.layers.dense(inputs=features_reshaped, activation=tf.sigmoid, units=1, name="predictions")
 
     with tf.name_scope("loss"):
         labels_reshaped = tf.reshape(labels, shape=[-1, 1], name="labels_r")
