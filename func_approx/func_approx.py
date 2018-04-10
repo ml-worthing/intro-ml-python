@@ -35,8 +35,8 @@ def makeData():
     r = random.Random(P.seed + 1)
     features = [r.uniform(P.min_x, P.max_x) for _ in range(P.number_of_samples)]
     labels = [func_to_approx(x) for x in features]
-    test_xs = [x for x in np.arange(P.min_x, P.max_x, P.test_xs_step)]
-    return features, labels, test_xs
+    test_features = [x for x in np.arange(P.min_x, P.max_x, P.test_xs_step)]
+    return features, labels, test_features
 
 
 class G:
