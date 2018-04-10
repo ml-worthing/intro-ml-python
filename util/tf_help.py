@@ -1,8 +1,65 @@
 import tensorflow as tf
 import os
+import datetime
+import json
 
-def crete_file_writer(file):
+import matplotlib.pyplot as plt
+import io
+import errno
+
+def crete_file_writer(file, hparam_string=""):
     """creates FileWriter with name `.tensorboard-<file>`"""
-    writer = tf.summary.FileWriter(".tensorboard-" + os.path.basename(file))
+
+    parent_folder = ".tensorboard-" + os.path.basename(file)
+    run_number = get_and_increase_run_number(parent_folder)
+    child_file = "/rn%s_%s" % (run_number, hparam_string)
+    writer = tf.summary.FileWriter(parent_folder + child_file)
     return writer
 
+
+def plot_summary(summary_name, x, y, style='bo'):
+    """creates an image summary containing plot"""
+    plt.figure()
+    plt.plot(x, y, style)
+    plt.title(summary_name)
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    image = tf.image.decode_png(buf.getvalue(), channels=4)  # Convert PNG buffer to TF image
+    image = tf.expand_dims(image, 0)  # Add the batch dimension
+    summary = tf.summary.image(summary_name, image)
+    return summary
+
+
+def get_and_increase_run_number(parent_folder):
+    """reads and parses 'run.json' file. It bumps up the 'run_number' value in it. """
+    file_name = parent_folder + '/run.json'
+    next_run_number_key = "next_run_number"
+
+    def initialize():
+        try:
+            os.makedirs(os.path.dirname(file_name))
+        except OSError as exc: # Guard against race condition
+            if exc.errno != errno.EEXIST:
+                raise
+
+        with open(file_name, 'w') as f:
+            data = {next_run_number_key: 0}
+            json.dump(data, f)
+
+    if not os.path.exists(file_name):
+        initialize()
+
+    is_file_empty = os.stat(file_name).st_size == 0
+    if is_file_empty:
+        initialize()
+
+    with open(file_name, 'r+') as f:
+        json_data = f.read()
+        data = json.loads(json_data)
+        run_number = data[next_run_number_key]
+        data[next_run_number_key] = run_number + 1
+        f.seek(0)  # truncates file
+        json.dump(data, f)
+
+    return run_number

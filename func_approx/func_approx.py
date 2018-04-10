@@ -1,7 +1,10 @@
+from uu import test
+
 import tensorflow as tf
 import random
 from util import tf_help
 import time
+import numpy as np
 
 
 def func_to_approx(x):
@@ -14,17 +17,26 @@ def func_to_approx(x):
 
 class P:
     """global props so intellij can auto-complete after p.<ctrl+space>"""
-    steps = 100
+    steps = 5250
+    summaries_on_step = 20
     min_x = -10
     max_x = 10
-    number_of_samples = 100
-    seed = 123
+    test_xs_step = 1.0
+    number_of_samples = 15
+    learning_rate = 1e-3
+    seed = 122
+
+    @staticmethod
+    def makeParamString():
+        return "lr%s_nos%s" % (P.learning_rate, P.number_of_samples)
 
 
 def makeData():
-    features = [random.uniform(P.min_x, P.max_x) for _ in range(P.number_of_samples)]
+    r = random.Random(P.seed + 1)
+    features = [r.uniform(P.min_x, P.max_x) for _ in range(P.number_of_samples)]
     labels = [func_to_approx(x) for x in features]
-    return (features, labels)
+    test_xs = [x for x in np.arange(P.min_x, P.max_x, P.test_xs_step)]
+    return features, labels, test_xs
 
 
 class G:
@@ -42,44 +54,44 @@ class G:
     with tf.name_scope("loss"):
         labels_reshaped = tf.reshape(labels, shape=[-1, 1], name="labels_r")
         loss = tf.losses.mean_squared_error(labels=labels_reshaped, predictions=predictions)
+        tf.summary.scalar('loss', loss)
 
     with tf.name_scope("training"):
-        optimiser = tf.train.GradientDescentOptimizer(1e-5)
+        optimiser = tf.train.GradientDescentOptimizer(P.learning_rate)
         minimise = optimiser.minimize(loss)
 
     with tf.name_scope("everything_else"):
         init = tf.global_variables_initializer()
+        f_summary = tf.summary.tensor_summary(name='features', tensor=features_reshaped, summary_description="whatever")
+        tf.summary.tensor_summary('labels', labels)
+        summaries = tf.summary.merge_all()
 
-    writer = tf_help.crete_file_writer(__file__)
-    writer.add_graph(tf.get_default_graph())
     print('[Done] Creating graph')
 
 
-(xs, ys) = makeData()
+(xs, ys, test_xs) = makeData()
+
+writer = tf_help.crete_file_writer(__file__, P.makeParamString())
+writer.add_graph(tf.get_default_graph())
 
 with tf.Session() as sess:
     sess.run(G.init)
+
+    plot_data_summary = sess.run(tf_help.plot_summary('func_to_approx', xs, ys))
+    writer.add_summary(plot_data_summary)
     for step in range(P.steps):
-        _, loss = sess.run((G.minimise, G.loss), feed_dict={G.features: xs, G.labels: ys})
-        print("Step %d %s" % (step, loss))
+        if step % P.summaries_on_step == 0:
+            _, loss, summaries = sess.run((G.minimise, G.loss, G.summaries), feed_dict={G.features: xs, G.labels: ys})
+            writer.add_summary(summaries, step)
+
+            predictions = sess.run(G.predictions, feed_dict={G.features: test_xs})
+            plot_data_summary = sess.run(tf_help.plot_summary('predictions_step_%s' % step, test_xs, predictions))
+            writer.add_summary(plot_data_summary)
+
+            print("Step %d %s" % (step, loss))
+        else:
+            sess.run(G.minimise, feed_dict={G.features: xs, G.labels: ys})
 
 time.sleep(2)  # wait for writer writes events to disk
 print("Done")
-exit()
 
-import tensorflow as tf
-
-# custom plot
-# tp = [] # the true positive rate list
-# fp = [] # the false positive rate list
-# total = len(fp)
-# writer = tf.train.SummaryWriter("/tmp/tensorboard_roc")
-# for idx in range(total):
-#     summt = tf.Summary()
-#     summt.value.add(tag="roc", simple_value = tp[idx])
-#     writer.add_summary (summt, tp[idx] * 100) #act as global_step
-#     writer.flush ()
-#
-# then start a tensorboard
-# tensorboard --logdir=/tmp/tensorboard_roc
-#
