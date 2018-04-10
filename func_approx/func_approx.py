@@ -70,10 +70,10 @@ class G:
     print('[Done] Creating graph')
 
 
-(xs, ys, test_xs) = makeData()
-
 writer = tf_help.crete_file_writer(__file__, P.makeParamString())
 writer.add_graph(tf.get_default_graph())
+
+(xs, ys, test_xs) = makeData()
 
 with tf.Session() as sess:
     sess.run(G.init)
@@ -95,4 +95,3 @@ with tf.Session() as sess:
 
 time.sleep(2)  # wait for writer writes events to disk
 print("Done")
-
