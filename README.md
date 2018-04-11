@@ -32,7 +32,11 @@ tensorboard --logdir func_approx/.tensorboard-func_approx.py
 
 
 ## Setup Intellij
-Open project settings and add python SDK pointing to virtual environment:
+Find the environment path:
+```bash
+conda info --envs | grep tf
+```
+Open project settings and add python SDK pointing to proper virtual environment found above:
 ![Setup Intellij](docs/setupIdea.png)
 
 
