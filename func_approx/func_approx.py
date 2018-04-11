@@ -51,6 +51,11 @@ class G:
     with tf.name_scope("model"):
         features_reshaped = tf.reshape(features, shape=[-1, 1], name="features_r")
         predictions = tf.layers.dense(inputs=features_reshaped, activation=tf.sigmoid, units=1, name="predictions")
+        with tf.variable_scope("predictions", reuse=True):
+            bias = tf.get_variable("bias")
+            tf.summary.scalar('bias', tf.reshape(bias, []))
+            kernel = tf.get_variable("kernel")
+            tf.summary.scalar('kernel', tf.reshape(kernel, []))
 
     with tf.name_scope("loss"):
         labels_reshaped = tf.reshape(labels, shape=[-1, 1], name="labels_r")
