@@ -23,7 +23,7 @@ class P:
     group_name = "beta"
 
     @staticmethod
-    def makeParamString():
+    def make_param_string():
         return "lr%s_nos%s_hu%s_%s_" % (P.learning_rate, P.number_of_samples, P.num_of_hidden_units, P.group_name)
 
 
@@ -116,7 +116,7 @@ class S:
     @staticmethod
     def run_experiment(experiment_no=None):
 
-        writer = tf_help.crete_file_writer(__file__, P.makeParamString())
+        writer = tf_help.crete_file_writer(__file__, P.make_param_string())
         writer.add_graph(tf.get_default_graph())
 
         with tf.Session() as sess:
