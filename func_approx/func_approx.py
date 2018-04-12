@@ -50,7 +50,7 @@ def func_to_approx(x):
     return Functions.f1(x)
 
 
-def makeData():
+def make_data():
     """creates arrays of numbers representing features and corresponsing labels"""
     r = random.Random(P.seed + 1)
     features = [r.uniform(P.min_x, P.max_x) for _ in range(P.number_of_samples)]
@@ -111,7 +111,7 @@ class G:
 
 
 class S:
-    (xs, ys, test_xs) = makeData()
+    (xs, ys, test_xs) = make_data()
 
     @staticmethod
     def run_experiment(experiment_no=None):
