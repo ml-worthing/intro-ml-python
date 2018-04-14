@@ -7,10 +7,9 @@ from util import tf_help
 import time
 import numpy as np
 
-
 class P:
     """global props so intellij can auto-complete after p.<ctrl+space>"""
-    steps = 15000
+    steps = 25000
     summaries_on_step = 50
     min_x = -10
     max_x = 10
@@ -19,7 +18,7 @@ class P:
     learning_rate = 1e-2
     seed = 122
     num_of_hidden_units = 1
-    num_of_experiments = 3
+    num_of_experiments = 10
     group_name = "beta"
 
     @staticmethod
@@ -70,33 +69,40 @@ class G:
     with tf.name_scope("model"):
         features_reshaped = tf.reshape(features, shape=[-1, 1], name="features_r")
 
-        predictions = tf.layers.dense(inputs=features_reshaped,
-                                      activation=tf.sigmoid,
-                                      units=P.num_of_hidden_units,
-                                      name="predictions")
+        model = tf.layers.dense(inputs=features_reshaped,
+                                activation=tf.sigmoid,
+                                units=P.num_of_hidden_units,
+                                name="in_layer")
 
-        predictions = tf.layers.dense(inputs=predictions,
-                                      activation=None,
-                                      units=1,
-                                      name="predictions_out")
-        with tf.variable_scope("predictions", reuse=True):
-            bias = tf.get_variable("bias")
-            # tf.summary.scalar('bias_s', tf.reshape(bias, []))
-            tf.summary.histogram('bias_h', bias)
-            kernel = tf.get_variable("kernel")
-            # tf.summary.scalar('kernel_s', tf.reshape(kernel, []))
-            tf.summary.histogram('kernel_h', kernel)
-            tf.summary.tensor_summary('kernel_summary', kernel)
+        tf_help.summate_kernel_verbose("in_layer")
+        tf_help.summate_bias_verbose("in_layer")
 
-        with tf.variable_scope("predictions_out", reuse=True):
-            bias = tf.get_variable("bias")
-            tf.summary.scalar('bias_out', tf.reshape(bias, []))
-            kernel = tf.get_variable("kernel")
-            # tf.summary.scalar('kernel_out', tf.reshape(kernel, []))
+        model = tf.layers.dense(inputs=model,
+                                activation=None,
+                                units=1,
+                                name="out_layer")
+        tf_help.summate_kernel_verbose("out_layer")
+
+        # with tf.variable_scope("predictions", reuse=True):
+        #     bias = tf.get_variable("bias")
+        #     # tf.summary.scalar('bias_s', tf.reshape(bias, []))
+        #     tf.summary.histogram('bias_h', bias)
+        #     kernel = tf.get_variable("kernel")
+        #     for i in range(P.num_of_hidden_units):
+        #         kernel_i = kernel[0, i]
+        #         tf.summary.scalar('kernel_s_%s' % i, tf.reshape(kernel_i, []))
+        #     tf.summary.histogram('kernel_h', kernel)
+        #     tf.summary.tensor_summary('kernel_summary', kernel)
+
+        # with tf.variable_scope("predictions_out", reuse=True):
+        #     bias = tf.get_variable("bias")
+        #     tf.summary.scalar('bias_out', tf.reshape(bias, []))
+        #     kernel = tf.get_variable("kernel")
+        #     # tf.summary.scalar('kernel_out', tf.reshape(kernel, []))
 
     with tf.name_scope("loss"):
         labels_reshaped = tf.reshape(labels, shape=[-1, 1], name="labels_r")
-        loss = tf.losses.mean_squared_error(labels=labels_reshaped, predictions=predictions)
+        loss = tf.losses.mean_squared_error(labels=labels_reshaped, predictions=model)
         tf.summary.scalar('loss', loss)
 
     with tf.name_scope("training"):
@@ -130,18 +136,47 @@ class S:
                                                   feed_dict={G.features: S.xs, G.labels: S.ys})
                     writer.add_summary(summaries, step)
 
-                    predictions = sess.run(G.predictions, feed_dict={G.features: S.test_xs})
+                    predictions = sess.run(G.model, feed_dict={G.features: S.test_xs})
                     plot_data_summary = sess.run(
                         tf_help.plot_summary('predictions_step_%s' % step, S.test_xs, predictions))
                     writer.add_summary(plot_data_summary)
 
-                    print("#%s/%s step:%d loss:%s" % (experiment_no, P.num_of_experiments, step, loss))
+                    print("%s #%s/%s step:%d loss:%s" % (P.group_name, experiment_no, P.num_of_experiments, step, loss))
                 else:
                     sess.run(G.minimise, feed_dict={G.features: S.xs, G.labels: S.ys})
 
 
+P.group_name="zealot"
+P.num_of_hidden_units=1
+
 for experiment_no in range(P.num_of_experiments):
     S.run_experiment(experiment_no)
+
+
+P.group_name="adept"
+P.num_of_hidden_units=2
+
+for experiment_no in range(P.num_of_experiments):
+    S.run_experiment(experiment_no)
+
+P.group_name="archon"
+P.num_of_hidden_units=3
+
+for experiment_no in range(P.num_of_experiments):
+    S.run_experiment(experiment_no)
+
+P.group_name="templar"
+P.num_of_hidden_units=20
+
+for experiment_no in range(P.num_of_experiments):
+    S.run_experiment(experiment_no)
+
+P.group_name="dragon"
+P.num_of_hidden_units=100
+
+for experiment_no in range(P.num_of_experiments):
+    S.run_experiment(experiment_no)
+
 
 time.sleep(2)  # wait for writer writes events to disk
 print("Done")
