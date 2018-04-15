@@ -46,6 +46,7 @@ activations = [
     (tf.nn.softplus, 'softplus'),
     (tf.nn.softsign, 'softsign'),
     (tf.nn.tanh, 'tanh'),
+    (tf.nn.leaky_relu, 'leaky_relu'),
 ]
 
 
