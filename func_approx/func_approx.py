@@ -80,15 +80,14 @@ class G:
                             units=P.num_of_hidden_units,
                             name="in_layer")
 
-    tf_help.summate_kernel_verbose("in_layer")
-    tf_help.summate_bias_verbose("in_layer")
+    tf_help.summate_dense_verbose("in_layer")
 
     model = tf.layers.dense(inputs=model,
                             activation=None,
                             units=1,
                             name="out_layer")
-    tf_help.summate_kernel_verbose("out_layer")
-    tf_help.summate_bias_verbose("out_layer")
+
+    tf_help.summate_dense_verbose("out_layer")
 
     with tf.name_scope("loss"):
         labels_reshaped = tf.reshape(labels, shape=[-1, 1], name="labels_r")
@@ -125,7 +124,8 @@ class S:
                     writer.add_summary(summaries, step)
 
                     predictions = sess.run(G.model, feed_dict={G.features: S.test_xs})
-                    print("%s #%s/%s step:%d loss:%s" % (P.make_param_string(), experiment_no, P.num_of_experiments, step, loss))
+                    print("%s #%s/%s step:%d loss:%s" % (
+                    P.make_param_string(), experiment_no, P.num_of_experiments, step, loss))
                     if step % (2 * P.summaries_on_step) == 0:
                         plot_data_summary = sess.run(
                             tf_help.plot_summary(
@@ -133,7 +133,7 @@ class S:
                                 xs=[S.xs, S.test_xs],
                                 ys=[S.ys, predictions],
                                 styles=['bo', 'r--'],
-                                labels = ['func_to_approx', 'approximation'],
+                                labels=['func_to_approx', 'approximation'],
                                 loss=loss
                             ))
                         writer.add_summary(plot_data_summary)

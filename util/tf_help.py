@@ -22,7 +22,7 @@ def plot_summary(summary_name, xs, ys, styles, labels, loss=None):
     """creates an image summary containing plots"""
     assert len(xs) == len(ys), "xs and ys are different lengths"
     for (x, y, style, label) in zip(xs, ys, styles, labels):
-        plt.plot(x, y, style, antialiased=True, label = label)
+        plt.plot(x, y, style, antialiased=True, label=label)
         plt.title("%s (loss=%s)" % (summary_name, loss))
         plt.legend()
         plt.grid(True)
@@ -70,6 +70,13 @@ def get_and_increase_run_number(parent_folder):
     return run_number
 
 
+def summate_dense_verbose(variable_scope):
+    "Plots all kernel and bias weights from dense layer as well some stats"
+    with tf.name_scope("summate_dense_verbose"):
+        summate_kernel_verbose(variable_scope)
+        summate_bias_verbose(variable_scope)
+
+
 def summate_kernel_verbose(variable_scope):
     """Plot all kernel values from dense layer. As well plot some stats"""
     with tf.variable_scope(variable_scope, reuse=True):
@@ -88,8 +95,6 @@ def summate_kernel_verbose(variable_scope):
                 tf.summary.scalar('kernel_[%s,%s]' % (c, r), tf.reshape(kernel_i, []),
                                   family="%s_elements" % variable_scope)
 
-    return None
-
 
 def summate_bias_verbose(variable_scope):
     """Plot all bias values from dense layer. As well plot some stats"""
@@ -106,5 +111,3 @@ def summate_bias_verbose(variable_scope):
             bias_i = bias[c]
             tf.summary.scalar('bias_[%s]' % (c), tf.reshape(bias_i, []),
                               family="%s_elements" % variable_scope)
-
-    return None
