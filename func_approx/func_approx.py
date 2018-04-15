@@ -75,7 +75,8 @@ class G:
     features_reshaped = tf.reshape(features, shape=[-1, 1], name="features_r")
 
     model = tf.layers.dense(inputs=features_reshaped,
-                            activation=tf.sigmoid,
+                            #https://www.tensorflow.org/api_guides/python/nn#Activation_Functions
+                            activation=tf.nn.relu6,
                             units=P.num_of_hidden_units,
                             name="in_layer")
 

@@ -17,7 +17,6 @@ def crete_file_writer(file, hparam_string=""):
     writer = tf.summary.FileWriter(parent_folder + child_file)
     return writer
 
-
 def plot_summary(summary_name, xs, ys, styles, labels, loss=None):
     """creates an image summary containing plots"""
     assert len(xs) == len(ys), "xs and ys are different lengths"

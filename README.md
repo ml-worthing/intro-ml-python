@@ -42,6 +42,19 @@ Open project settings and add python SDK pointing to proper virtual environment 
 
 
 
+## Activation functions
+
+![](docs/activations/sigmoid.png)
+![](docs/activations/relu.png)
+![](docs/activations/relu6.png)
+![](docs/activations/crelu.png)
+![](docs/activations/selu.png)
+![](docs/activations/elu.png)
+![](docs/activations/softplus.png)
+![](docs/activations/softsign.png)
+![](docs/activations/tanh.png)
+
+
 
 
 
