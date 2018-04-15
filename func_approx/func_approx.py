@@ -33,6 +33,7 @@ class Functions:
 
     @staticmethod
     def f1(x):
+        "signum function"
         if x < 0:
             return 0.0
         else:
@@ -40,19 +41,25 @@ class Functions:
 
     @staticmethod
     def f2(x):
-        if x < 1.5:
-            return 0.0
-        else:
-            return 1.0
+        "shifed f1"
+        return Functions.f1(x + 1.2)
+
+    @staticmethod
+    def f3(x):
+        "shifed and lifted f1"
+        return Functions.f1(x+1.2) + 0.4
 
     @staticmethod
     def sinlike(x):
-        return math.sin(5.0 * x) * x
+        "increasing in amplitude sinus like"
+        return math.sin(5.0 * x) * x + 0.7
+
+
 
 
 def func_to_approx(x):
     """Function to approximate"""
-    return Functions.f1(x)
+    return Functions.f2(x)
 
 
 def make_data():
