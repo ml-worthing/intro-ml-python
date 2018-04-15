@@ -47,14 +47,12 @@ class Functions:
     @staticmethod
     def f3(x):
         "shifed and lifted f1"
-        return Functions.f1(x+1.2) + 0.4
+        return Functions.f1(x + 1.2) + 0.4
 
     @staticmethod
     def sinlike(x):
         "increasing in amplitude sinus like"
         return math.sin(5.0 * x) * x + 0.7
-
-
 
 
 def func_to_approx(x):
@@ -82,7 +80,7 @@ class G:
     features_reshaped = tf.reshape(features, shape=[-1, 1], name="features_r")
 
     model = tf.layers.dense(inputs=features_reshaped,
-                            #https://www.tensorflow.org/api_guides/python/nn#Activation_Functions
+                            # https://www.tensorflow.org/api_guides/python/nn#Activation_Functions
                             activation=tf.nn.relu6,
                             units=P.num_of_hidden_units,
                             name="in_layer")
@@ -132,7 +130,7 @@ class S:
 
                     predictions = sess.run(G.model, feed_dict={G.features: S.test_xs})
                     print("%s #%s/%s step:%d loss:%s" % (
-                    P.make_param_string(), experiment_no, P.num_of_experiments, step, loss))
+                        P.make_param_string(), experiment_no, P.num_of_experiments, step, loss))
                     if step % (2 * P.summaries_on_step) == 0:
                         plot_data_summary = sess.run(
                             tf_help.plot_summary(
