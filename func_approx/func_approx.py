@@ -6,6 +6,9 @@ from util import tf_help
 
 import time
 import numpy as np
+import tfmpl
+import math
+
 
 class P:
     """global props so intellij can auto-complete after p.<ctrl+space>"""
@@ -42,6 +45,10 @@ class Functions:
             return 0.0
         else:
             return 1.0
+
+    @staticmethod
+    def sinlike(x):
+        return math.sin(5.0 * x) * x
 
 
 def func_to_approx(x):
@@ -102,7 +109,6 @@ class G:
 class S:
     (xs, ys, test_xs) = make_data()
 
-
     @staticmethod
     def run_experiment(experiment_no=None):
 
@@ -120,24 +126,22 @@ class S:
 
                     predictions = sess.run(G.model, feed_dict={G.features: S.test_xs})
                     print("%s #%s/%s step:%d loss:%s" % (P.group_name, experiment_no, P.num_of_experiments, step, loss))
-                    if step % (2*P.summaries_on_step) == 0:
-
+                    if step % (2 * P.summaries_on_step) == 0:
                         plot_data_summary = sess.run(
                             tf_help.plot_summary(
                                 summary_name='predictions_step_%s' % step,
-                                xs = [S.xs, S.test_xs],
-                                ys = [S.ys, predictions],
+                                xs=[S.xs, S.test_xs],
+                                ys=[S.ys, predictions],
                                 styles=['bo', 'r--']
                             ))
                         writer.add_summary(plot_data_summary)
 
             else:
-                    sess.run(G.minimise, feed_dict={G.features: S.xs, G.labels: S.ys})
+                sess.run(G.minimise, feed_dict={G.features: S.xs, G.labels: S.ys})
 
 
 for experiment_no in range(P.num_of_experiments):
     S.run_experiment(experiment_no)
-
 
 time.sleep(2)  # wait for writer writes events to disk
 print("Done")
