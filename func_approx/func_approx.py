@@ -6,7 +6,6 @@ from util import tf_help
 
 import time
 import numpy as np
-import tfmpl
 import math
 
 
