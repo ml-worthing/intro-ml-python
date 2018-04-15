@@ -22,7 +22,7 @@ def plot_summary(summary_name, xs, ys, styles, labels, loss=None):
     """creates an image summary containing plots"""
     assert len(xs) == len(ys), "xs and ys are different lengths"
     for (x, y, style, label) in zip(xs, ys, styles, labels):
-        plt.plot(x, y, style, antlabel = label)
+        plt.plot(x, y, style, antialiased=True, label = label)
         plt.title("%s (loss=%s)" % (summary_name, loss))
         plt.legend()
         plt.grid(True)
