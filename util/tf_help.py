@@ -18,17 +18,19 @@ def crete_file_writer(file, hparam_string=""):
     return writer
 
 
-def plot_summary(summary_name, x, y, style='bo'):
-    """creates an image summary containing plot"""
+def plot_summary(summary_name, xs, ys, styles):
+    """creates an image summary containing plots"""
+    assert len(xs) == len(ys), "xs and ys are different lengths"
     plt.figure()
-    plt.plot(x, y, style)
-    plt.title(summary_name)
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-    image = tf.image.decode_png(buf.getvalue(), channels=4)  # Convert PNG buffer to TF image
-    image = tf.expand_dims(image, 0)  # Add the batch dimension
-    summary = tf.summary.image(summary_name, image)
+    for (x, y, style) in zip(xs, ys, styles):
+        plt.plot(x, y, style)
+        plt.title(summary_name)
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        image = tf.image.decode_png(buf.getvalue(), channels=4)  # Convert PNG buffer to TF image
+        image = tf.expand_dims(image, 0)  # Add the batch dimension
+        summary = tf.summary.image(summary_name, image)
     return summary
 
 
