@@ -31,6 +31,7 @@ def plot_summary(summary_name, xs, ys, styles):
         image = tf.image.decode_png(buf.getvalue(), channels=4)  # Convert PNG buffer to TF image
         image = tf.expand_dims(image, 0)  # Add the batch dimension
         summary = tf.summary.image(summary_name, image)
+    plt.close()
     return summary
 
 

@@ -21,7 +21,7 @@ class P:
     learning_rate = 1e-1
     seed = 122
     num_of_hidden_units = 1
-    num_of_experiments = 10
+    num_of_experiments = 1
     group_name = "beta"
 
     @staticmethod
@@ -125,7 +125,7 @@ class S:
                     writer.add_summary(summaries, step)
 
                     predictions = sess.run(G.model, feed_dict={G.features: S.test_xs})
-                    print("%s #%s/%s step:%d loss:%s" % (P.group_name, experiment_no, P.num_of_experiments, step, loss))
+                    print("%s #%s/%s step:%d loss:%s" % (P.make_param_string(), experiment_no, P.num_of_experiments, step, loss))
                     if step % (2 * P.summaries_on_step) == 0:
                         plot_data_summary = sess.run(
                             tf_help.plot_summary(
