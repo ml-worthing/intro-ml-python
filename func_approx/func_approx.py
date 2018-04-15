@@ -133,6 +133,7 @@ class S:
                                 xs=[S.xs, S.test_xs],
                                 ys=[S.ys, predictions],
                                 styles=['bo', 'r--'],
+                                labels = ['func_to_approx', 'approximation'],
                                 loss=loss
                             ))
                         writer.add_summary(plot_data_summary)
