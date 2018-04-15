@@ -18,13 +18,14 @@ def crete_file_writer(file, hparam_string=""):
     return writer
 
 
-def plot_summary(summary_name, xs, ys, styles):
+def plot_summary(summary_name, xs, ys, styles, loss=None):
     """creates an image summary containing plots"""
     assert len(xs) == len(ys), "xs and ys are different lengths"
     plt.figure()
     for (x, y, style) in zip(xs, ys, styles):
-        plt.plot(x, y, style)
-        plt.title(summary_name)
+        plt.plot(x, y, style, antialiased=True)
+        plt.title("%s (loss=%s)" % (summary_name, loss))
+        plt.grid(True)
         buf = io.BytesIO()
         plt.savefig(buf, format='png')
         buf.seek(0)

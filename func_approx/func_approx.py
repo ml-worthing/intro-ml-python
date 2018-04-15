@@ -132,7 +132,8 @@ class S:
                                 summary_name='predictions_step_%s' % step,
                                 xs=[S.xs, S.test_xs],
                                 ys=[S.ys, predictions],
-                                styles=['bo', 'r--']
+                                styles=['bo', 'r--'],
+                                loss=loss
                             ))
                         writer.add_summary(plot_data_summary)
 
