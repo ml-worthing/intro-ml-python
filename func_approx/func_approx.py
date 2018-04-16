@@ -57,7 +57,7 @@ class Functions:
 
 def func_to_approx(x):
     """Function to approximate"""
-    return Functions.f2(x)
+    return Functions.f3(x)
 
 
 def make_data():
