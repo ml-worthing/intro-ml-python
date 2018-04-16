@@ -46,8 +46,6 @@ Open project settings and add python SDK pointing to proper virtual environment 
 
 ![](docs/activations/sigmoid.png)
 
-![](docs/activations/softplus.png)
-
 ![](docs/activations/softsign.png)
 
 ![](docs/activations/tanh.png)
@@ -63,6 +61,8 @@ Open project settings and add python SDK pointing to proper virtual environment 
 ![](docs/activations/selu.png)
 
 ![](docs/activations/elu.png)
+
+![](docs/activations/softplus.png)
 
 
 
