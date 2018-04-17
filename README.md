@@ -30,6 +30,14 @@ pip install -r requirements.txt
 tensorboard --logdir func_approx/.tensorboard-func_approx.py
 ```
 
+# Running from commandline
+
+* Make sure `tf` environment is active
+* Use `run.sh <path_to_python_script>`, for example
+
+```bash
+./run.sh func_approx/func_approx.py
+```
 
 ## Setup IDE
 Find the environment path:
