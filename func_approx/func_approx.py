@@ -2,7 +2,11 @@ from uu import test
 
 import tensorflow as tf
 import random
-from util import tf_help
+
+import os,sys,inspect
+currdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+sys.path.append(os.path.dirname(currdir))
+import util.tf_help as tf_help
 
 import time
 import numpy as np
