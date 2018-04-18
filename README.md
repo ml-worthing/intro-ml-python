@@ -51,6 +51,13 @@ tensorboard --logdir func_approx/.tensorboard-func_approx.py
 ./run.sh func_approx/func_approx.py
 ```
 
+* or add this to the root of the python script:
+```python
+import os,sys,inspect
+currdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+sys.path.append(os.path.dirname(currdir))
+```
+
 # modules and auto reloading
 tl/df
 ```
@@ -59,6 +66,7 @@ tl/df
 # %aimport
 ```
 https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html
+
 
 ## Setup IDE
 Find the environment path:
