@@ -26,7 +26,16 @@ conda activate tf
 pip install --upgrade tensorflow
 pip freeze > requirements.txt 
 pip install -r requirements.txt
+pip install -r requirements.txt --upgrade
 conda update conda
+pip install --upgrade pip
+pip install --upgrade jupyter
+pip install --upgrade notebook
+pip install --upgrade tensorboard
+
+jupyter notebook #start jupyter
+
+
 ```
 ## tensor board
 ```bash
