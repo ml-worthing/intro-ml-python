@@ -51,6 +51,15 @@ tensorboard --logdir func_approx/.tensorboard-func_approx.py
 ./run.sh func_approx/func_approx.py
 ```
 
+# modules and auto reloading
+tl/df
+```
+%load_ext autoreload
+%autoreload 2
+# %aimport
+```
+https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html
+
 ## Setup IDE
 Find the environment path:
 ```bash
