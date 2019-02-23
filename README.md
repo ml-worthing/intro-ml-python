@@ -16,6 +16,8 @@ pip install -r requirements.txt # inside environment install tensorflow and all 
 
 ```bash
 source activate tf  # enter created environment
+# or 
+conda activate tf
 ```
 
 ## occasionally 
@@ -23,7 +25,8 @@ source activate tf  # enter created environment
 ```bash
 pip install --upgrade tensorflow
 pip freeze > requirements.txt 
-pip install -r requirements.txt 
+pip install -r requirements.txt
+conda update conda
 ```
 ## tensor board
 ```bash
