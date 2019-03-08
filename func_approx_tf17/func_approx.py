@@ -23,7 +23,7 @@ class P:
     number_of_samples = 15
     learning_rate = 1e-1
     seed = 122
-    num_of_hidden_units = 1
+    num_of_hidden_units = 13
     num_of_experiments = 1
     group_name = "beta"
 
@@ -85,7 +85,7 @@ class G:
 
     model = tf.layers.dense(inputs=features_reshaped,
                             # https://www.tensorflow.org/api_guides/python/nn#Activation_Functions
-                            activation=tf.nn.relu6,
+                            activation=tf.nn.tanh,
                             units=P.num_of_hidden_units,
                             name="in_layer")
 
@@ -105,7 +105,14 @@ class G:
 
     with tf.name_scope("training"):
         optimiser = tf.train.GradientDescentOptimizer(P.learning_rate)
-        minimise = optimiser.minimize(loss)
+        with tf.variable_scope("in_layer", reuse=True):
+            kernel = tf.get_variable("kernel")
+
+        grads = optimiser.compute_gradients(loss, kernel)
+        tf.summary.scalar("grads0", tf.reshape(grads[0][0], []))
+        tf.summary.scalar("grads1", tf.reshape(grads[0][1], []))
+
+    minimise = optimiser.minimize(loss)
 
     with tf.name_scope("everything_else"):
         init = tf.global_variables_initializer()
