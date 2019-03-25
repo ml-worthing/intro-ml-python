@@ -1,5 +1,6 @@
 
 # basedf on https://www.tensorflow.org/guide/keras
+# this is wip
 
 import tensorflow as tf
 from tensorflow._api.v1.keras import layers
