@@ -1,7 +1,6 @@
 # intro-ml-python
 Playground project for learning purposes
 
-
 # setup
 
 ## first time
@@ -11,7 +10,6 @@ source activate tf  # enter created environment
 pip install -r requirements.txt # inside environment install tensorflow and all dependencies
 
 ```
-
 ## next time
 
 ```bash
@@ -34,6 +32,9 @@ pip install --upgrade notebook
 pip install --upgrade tensorboard
 
 jupyter notebook #start jupyter
+
+conda update -n base -c defaults conda
+ 
 
 
 ```
@@ -77,6 +78,8 @@ conda info --envs | grep tf
 ### Intellij Ultimate Edition 
 Open project settings and add python SDK pointing to proper virtual environment found above:
 ![Setup Intellij](docs/setupIdea.png)
+
+And mark folder as sources.
 
 ### PyCharm Community Edition
 ![Setup Pycharm](docs/setupPycharm.png)
